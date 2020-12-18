@@ -1,6 +1,8 @@
 package tictactoe;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
@@ -132,33 +134,34 @@ public class Main {
     }
 
     public static void playerInput(Scanner scanner, char[][] field, char player) {
-        int x = 0;
-        int y = 0;
-
         while (true) {
-            try {
-                System.out.print("Enter the coordinates: > ");
+            int x, y;
+
+            //we make sure that user input is in the correct format
+            while (true) {
+                System.out.printf("Player %c's turn. Enter the coordinates: > ", player);
                 String input = scanner.nextLine();
-                String[] parts = input.split(" ");
-                x = Integer.parseInt(parts[0]);
-                y = Integer.parseInt(parts[1]);
-            } catch (NumberFormatException nfe) {
-                System.out.println("You should enter numbers!");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("You should separate the coordinates by space!");
+                Pattern pattern = Pattern.compile("[1-3]\\s[1-3]");
+                Matcher matcher = pattern.matcher(input);
+                if (matcher.matches()) {
+                    String[] parts = input.split(" ");
+                    x = Integer.parseInt(parts[0]);
+                    y = Integer.parseInt(parts[1]);
+                    break;
+                } else {
+                    System.out.println("Wrong coordinates! Enter two coordinates [1-3] separated by space. Try again:");
+                }
             }
 
-            if (x >= 1 && x <= 3 && y >= 1 && y <= 3) {
-                //use 1-3 valued (X,Y) coordinates for input and convert the coordinates to correct ArrayList indexes
-                int arrayRow = 3 - y;
-                int arrayCol = x - 1;
-                if (field[arrayRow][arrayCol] != ' ') {
-                    System.out.println("This cell is occupied! Choose another one!");
-                } else {
-                    field[arrayRow][arrayCol] = player;
-                    break;
-                }
-            } else System.out.println("Coordinates should be from 1 to 3!");
+            //use 1-3 valued (X,Y) coordinates for input and convert the coordinates to correct ArrayList indexes
+            int arrayRow = 3 - y;
+            int arrayCol = x - 1;
+            if (field[arrayRow][arrayCol] != ' ') {
+                System.out.println("This cell is occupied! Choose another one!");
+            } else {
+                field[arrayRow][arrayCol] = player;
+                break;
+            }
         }
     }
 }
