@@ -14,17 +14,16 @@ public class Main {
         while (true) {
             drawField(field);
 
-            switch(player) {
-                case 'X':
+            switch (player) {
+                case 'X' -> {
                     playerInput(scanner, field, player);
                     player = 'O';
-                    break;
-                case 'O':
+                }
+                case 'O' -> {
                     playerInput(scanner, field, player);
                     player = 'X';
-                    break;
-                default:
-                    System.out.println("switch - case error");
+                }
+                default -> System.out.println("switch - case error");
             }
 
             if (!gameState(field).equals("Game not finished")) {
